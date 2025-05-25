@@ -1,0 +1,1 @@
+extension-pkg-whitelist=PyQt6 # it seems there's no support for PyQt6 in pylint yet
