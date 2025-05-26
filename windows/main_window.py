@@ -1,8 +1,9 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QPushButton, QSizePolicy, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
 
 from shared.config import Config
 from shared.konsave_interface import KonsaveInterface
+from windows.all_theme_window import AllThemeWindow
 from windows.save_theme_dialog import SaveThemeDialog
 
 
@@ -24,6 +25,7 @@ class MainWindow(QWidget):
         self.all_themes_button.setToolTip("View all available themes")
         self.all_themes_button.setMinimumSize(self.__buttons_width, self.__buttons_height)
         self.all_themes_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.all_themes_button.clicked.connect(self.open_all_themes_dialog)
 
         self.save_current_theme_button = QPushButton("Save Current Theme")
         self.save_current_theme_button.setToolTip("Save current set of configuration into a theme")
@@ -42,3 +44,9 @@ class MainWindow(QWidget):
             theme_name = dialog.get_theme_name()
             self.__konsave_interface.save_theme(theme_name)
             print("-> THEME SAVED: {theme_name}".format(theme_name=theme_name))
+            QMessageBox.information(self, "Theme Saved", f"Theme '{theme_name}' has been saved successfully.")
+
+    def open_all_themes_dialog(self):
+        themes = self.__konsave_interface.get_profile_list()
+        dialog = AllThemeWindow(self, themes)
+        dialog.exec()
