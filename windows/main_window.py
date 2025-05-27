@@ -47,6 +47,5 @@ class MainWindow(QWidget):
             QMessageBox.information(self, "Theme Saved", f"Theme '{theme_name}' has been saved successfully.")
 
     def open_all_themes_dialog(self):
-        themes = self.__konsave_interface.get_profile_list()
-        dialog = AllThemeWindow(self, themes)
+        dialog = AllThemeWindow(self)
         dialog.exec()

@@ -33,4 +33,7 @@ class KonsaveInterface:
         subprocess.run(["konsave", "-a", theme_name], check=True)
 
     def delete_theme(self, theme_name: str) -> None:
-        subprocess.run(["konsave", "-d", theme_name], check=True)
+        subprocess.run(["konsave", "-r", theme_name], check=True)
+
+    def export_theme(self, theme_name: str) -> None:
+        subprocess.run(["konsave", "-e", theme_name], check=True)
