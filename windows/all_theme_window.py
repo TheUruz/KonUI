@@ -146,7 +146,14 @@ class AllThemeWindow(QDialog):
     def export_theme(self, theme_name: str) -> None:
         # TODO: this should be made asynchronous and show a spinnger while exporting as themes can be very large files
         try:
-            self.__konsave_interface.export_theme(theme_name)
-            QMessageBox.information(self, "Theme Exported", f"Theme '{theme_name}' exported successfully.")
+            confirmation = QMessageBox.question(
+                self,
+                "Confirm Export",
+                f"Are you sure you want to export theme '{theme_name}'?\nWARNING: This might take a few minutes depending on the theme size!",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            )
+            if confirmation == QMessageBox.StandardButton.Yes:
+                self.__konsave_interface.export_theme(theme_name)
+                QMessageBox.information(self, "Theme Exported", f"Theme '{theme_name}' exported successfully.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to export theme '{theme_name}'\nError: {e}")
