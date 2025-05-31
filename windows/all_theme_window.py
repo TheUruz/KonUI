@@ -26,8 +26,8 @@ class AllThemeWindow(QDialog):
         self.main_layout = QVBoxLayout(self)
         self.setLayout(self.main_layout)
         self.add_table()
-        self.add_buttons()
-        self.validate_buttons_state()
+        # self.add_buttons()
+        # self.validate_buttons_state()
 
     def add_table(self) -> None:
         self.table_layout = QVBoxLayout()
@@ -42,7 +42,7 @@ class AllThemeWindow(QDialog):
             return
 
         self.table = QTableWidget()
-        self.table.setColumnCount(4)
+        self.table.setColumnCount(3)
         self.table.setAlternatingRowColors(True)
 
         self.table.setHorizontalHeaderLabels(["Theme", "", "", ""])
@@ -73,7 +73,7 @@ class AllThemeWindow(QDialog):
 
             self.table.setCellWidget(row, 1, apply_btn)
             self.table.setCellWidget(row, 2, delete_btn)
-            self.table.setCellWidget(row, 3, export_btn)
+            # self.table.setCellWidget(row, 3, export_btn)
 
         self.table.resizeColumnsToContents()
         self.table.setColumnWidth(1, 50)

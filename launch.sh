@@ -6,10 +6,8 @@ if [ ! -d "venv" ]; then
     echo "-> Virtual environment created!"
 fi
 
-# Attiva il venv
 source venv/bin/activate
 
-# Installa i pacchetti da requirements.txt se esiste
 if [ -f "requirements.txt" ]; then
     echo "-> Installing dependencies inside virtual environment..."
     pip install -r requirements.txt

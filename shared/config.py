@@ -1,4 +1,4 @@
-CONFIG = {"app_name": "KonsaveUI"}
+CONFIG = {"app_name": "KonUI"}
 
 
 class Config:
