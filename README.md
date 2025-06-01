@@ -1,7 +1,8 @@
 # KonUI
 
-The project aims to provide a handy UI for Prayag2's [Konsave](https://github.com/Prayag2/konsave) to everyone that prefer have to deal with an interface or maybe to Linux newcomers that are still afraid of terminal 🙂.  
-Konsave is a CLI tool written in Python that lets you manage theme configurations. **I am not affiliate with Prayag2 and his team in any way so please do not consider this as an official Konsave UI**.
+The project aims to provide a user-friendly UI for Prayag2's [Konsave](https://github.com/Prayag2/konsave) targeting users who prefer working with a graphical interface, as well as Linux newcomers who may still be intimidated by the terminal 🙂.  
+[Konsave](https://github.com/Prayag2/konsave) is a command-line tool written in Python that lets you manage theme configurations.  
+**I am not affiliated with Prayag2 or his team in any way, so please do not consider this an official Konsave UI**.
 
 ## Current functionalities
 
@@ -11,18 +12,34 @@ Konsave is a CLI tool written in Python that lets you manage theme configuration
 
 ## How to use this project
 
-**IMPORTANT**: As a prerequisite to use this UI you must have Python3 (3.13+) and Prayag2's [Konsave](https://github.com/Prayag2/konsave) installed on your system and both should be in PATH. This project has been built with KDE in mind so even if Konsave should work with other Desktop Environments, i cannot guarantee this UI does as well (even though both should).  
+**IMPORTANT**: To use this UI, you must have Python 3 (version 3.13 or higher) and Konsave installed on your system. Both must be available in your system's ```PATH```.
+This project was built with KDE in mind, so even though Konsave should work with other desktop environments, I cannot guarantee that this UI will, although in theory it should.
 
-There are mainly two way to launch this project, one being using the **_launch.sh_** and the other is take the steps in it by yourself.
+There are mainly two ways to launch this project: using the **_launch.sh_** script or manually following the steps it performs.
 
-If you want to use the provided file just execute **_launch.sh_** after chmod it,  
-otherwise if you want to take the steps by yourself you have to execute the following commands from inside the project folder:
+If you want to use the provided script simply run **_launch.sh_** after making it executable.  
+Otherwise if you prefer to do things manually, run the following commands from inside the project folder:  
 
-- Create the Python virtual environment with: ```python -m venv venv```
-- Source that environment with: ```source ./venv/bin/activate```
-- Install the needed libraries with: ```pip install -r requirements.txt```
-- Launch the UI with: ```python main.py```
+- Create the Python virtual environment: ```python -m venv venv```
+- Activate the environment: ```source ./venv/bin/activate```
+- Install the required libraries: ```pip install -r requirements.txt```
+- Launch the UI: ```python main.py```
 
-The program does not save anything on its own, everything that's saved on disk is handled by Konsave itself so i'd sugget to take a look at [Konsave](https://github.com/Prayag2/konsave) to know where everything is saved.
+This UI itself does not save anything to disk: all saved configurations are handled by Konsave itself so if you need more details about how and where data is saved please take a look at Prayag2's amazing work.
 
 Every feedback is really appreciated! 😉
+
+---
+
+## Screenshots
+
+Here are UI screenshots. I choose to keep it as simple as possible in fact the UI consists only of these windows, providing nothing more than the core functionalities of Konsave.
+
+**Landing window**  
+![Landing window](https://i.imgur.com/aWodluN.png)
+
+**Saving current configurations**  
+![Save current theme window](https://imgur.com/864sZuA.png)
+
+**Listing all themes**  
+![All themes window](https://imgur.com/RItqohQ.png)
