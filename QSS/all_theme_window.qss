@@ -1,0 +1,40 @@
+#TableContentWidget {
+    font-size: 12px;
+}
+
+QLineEdit {
+    font-size: 14px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    height: 35px;
+}
+
+#TableButton {
+    background-color: transparent;
+    font-size: 20px;
+    border: none;
+}
+
+#TableButton::hover {
+    border: 2px solid #B0C4DE;
+    border-radius: 9px;
+}
+
+#TableHeaderWidget QPushButton {
+    background-color: transparent;
+    font-size: 20px;
+    border: none;
+    height: 35px;
+    width: 35px;
+}
+
+#TableHeaderWidget QPushButton::hover {
+    border: 2px solid #B0C4DE;
+    border-radius: 15px;
+}
+
+#NotFoundLabel {
+    font-size: 16px;
+    color: lightgray;
+    text-align: center;
+}
