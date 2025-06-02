@@ -6,7 +6,7 @@ The project aims to provide a user-friendly UI for Prayag2's [Konsave](https://g
 
 ## Current functionalities
 
-- Listing all Konsave themes configurations
+- Listing and filtering all Konsave themes configurations
 - Apply a Konsave theme configuration from said list
 - Deleting a Konsave theme configuration
 
@@ -29,6 +29,18 @@ This UI itself does not save anything to disk: all saved configurations are hand
 
 Every feedback is really appreciated! 😉
 
+## Moddability
+
+I love seeing users engaged with the project, so I'm trying to keep it as open to customization as possible. Because of this I have started implementing windows styling via QSS files. They are quite similar to CSS files but come with more limitations. That said, if you feel like the UI would benefit from a different theme, feel free to tweak your QSS files as you see fit!  
+
+**QSS files can be found in ```QSS/``` directory**  
+
+There's just one general rule to follow when using them: the file must always be named after the window it is intended to style. For example, if there's a window named ```foobar_window.py``` in the ```windows/``` directory, the corresponding QSS file should be named ```foobar_window.qss```  
+
+**IMPORTANT**: Please note that QSS is more limited than CSS, so not everything can be achieved in the same way. Also, if a specific window doesn't have a QSS file provided already, it means that window does not yet support styling via QSS.
+
+![meme_of_the_day](https://i.imgflip.com/9vz5ml.jpg)
+
 ---
 
 ## Screenshots
@@ -42,4 +54,4 @@ Here are UI screenshots. I choose to keep it as simple as possible in fact the U
 ![Save current theme window](https://imgur.com/864sZuA.png)
 
 **Listing all themes**  
-![All themes window](https://imgur.com/RItqohQ.png)
+![All themes window](https://imgur.com/srF2Uy5.png)
