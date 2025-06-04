@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 from typing import Tuple
 
@@ -19,6 +20,7 @@ from PyQt6.QtWidgets import (
 
 from shared.config import Config
 from shared.konsave_interface import KonsaveInterface
+from shared.os_interface import OsInterface
 
 
 class AllThemeWindow(QDialog):
@@ -153,10 +155,26 @@ class AllThemeWindow(QDialog):
     def apply_theme(self, theme_name: str) -> None:
         try:
             self.__konsave_interface.apply_theme(theme_name)
+            systemd_installed = OsInterface().check_systemd_installed()
+            if systemd_installed:
+                try_apply = QMessageBox.question(
+                    self,
+                    "Try Apply Immediately?",
+                    f"I can try to update to the selected theme right away.\nWould you like me to do that now?",
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                )
+                if try_apply == QMessageBox.StandardButton.Yes:
+                    self.reload_desktop_environment()
+                    QMessageBox.information(
+                        self,
+                        "Theme Applied",
+                        f"Theme '{theme_name}' applied successfully.\nSome changes might still require a relog to take full effect",
+                    )
+                    return
             QMessageBox.information(
                 self,
                 "Theme Applied",
-                f"Theme '{theme_name}' applied successfully.\nPlease logout and log back in to see the changes.",
+                f"Theme '{theme_name}' applied successfully.\nPlease logout and log back in to see the changes",
             )
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to apply theme '{theme_name}'\nError: {e}")
@@ -218,3 +236,18 @@ class AllThemeWindow(QDialog):
         else:
             self.search_toggle_btn.setText("❌")
             self.search_bar.setFocus()
+
+    def reload_desktop_environment(self):
+        subprocess.run(["systemctl", "--user", "restart", "plasma-plasmashell.service"], check=True)
+        de_protocol = OsInterface().get_de_protocol()
+
+        if de_protocol == "X11":
+            plasmashell_version = OsInterface().get_plasmashell_version()
+            if plasmashell_version not in ("5", "6"):
+                raise ValueError(f"Can't reload desktop environment because of an unsupported plasmashell version")
+            if plasmashell_version == "5":
+                subprocess.run([f"kquitapp5", "kwin_x11"], check=True)
+                subprocess.run(["kstart5", "kwin_x11"], check=True)
+            elif plasmashell_version == "6":
+                subprocess.run([f"kquitapp6", "kwin_x11"], check=True)
+                subprocess.run(["kstart", "kwin_x11"], check=True)

@@ -7,8 +7,10 @@ The project aims to provide a user-friendly UI for Prayag2's [Konsave](https://g
 ## Current functionalities
 
 - Listing and filtering all Konsave themes configurations
-- Apply a Konsave theme configuration from said list
+- Apply a Konsave theme configuration from the list (supporting immediate application*)
 - Deleting a Konsave theme configuration
+
+*On Wayland some components may not be applied immediately (most likely window decorations and some icons). This is not due to a bug, but rather a limitation of how Wayland works under the hood: KWin cannot be restarted without terminating all its processes and i don't think this kind of application should do that. I haven't tested this with other window managers. **In any case, the majority of the theme will still be applied right away, and any remaining parts will be correctly applied at the next login**.
 
 ## How to use this project
 
