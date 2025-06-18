@@ -1,8 +1,9 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
 
 from shared.config import Config
 from shared.konsave_interface import KonsaveInterface
+from shared.os_interface import OsInterface
 from windows.all_theme_window import AllThemeWindow
 from windows.save_theme_dialog import SaveThemeDialog
 
@@ -10,7 +11,6 @@ from windows.save_theme_dialog import SaveThemeDialog
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.__konsave_interface = KonsaveInterface()
         self.__buttons_width = 200
         self.__buttons_height = 50
 
@@ -18,8 +18,7 @@ class MainWindow(QWidget):
         self.setFixedSize(400, 240)
 
         self.main_layout = QVBoxLayout()
-        self.main_layout.setContentsMargins(50, 50, 50, 50)
-        self.main_layout.setSpacing(40)
+        self.main_layout.setContentsMargins(50, 50, 50, 60)
 
         self.all_themes_button = QPushButton("All Themes")
         self.all_themes_button.setToolTip("View all available themes")
@@ -37,12 +36,28 @@ class MainWindow(QWidget):
         self.main_layout.addWidget(self.save_current_theme_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.setLayout(self.main_layout)
+        self.add_bottom_info()
+
+    def add_bottom_info(self):
+        self.konsave_label = QLabel(self)
+        konsave_version = OsInterface.get_kosnave_version()
+        (
+            self.konsave_label.setText(f"Using Konsave v{konsave_version}")
+            if konsave_version
+            else self.konsave_label.setText("Konsave not found")
+        )
+        self.konsave_label.setFixedHeight(20)
+        self.konsave_label.adjustSize()
+        x = self.width() - self.konsave_label.width() - 5
+        y = self.height() - self.konsave_label.height() - 5
+        self.konsave_label.move(x, y)
+        self.konsave_label.show()
 
     def open_save_theme_dialog(self):
         dialog = SaveThemeDialog(self)
         if dialog.exec():
             theme_name = dialog.get_theme_name()
-            self.__konsave_interface.save_theme(theme_name)
+            KonsaveInterface().save_theme(theme_name)
             print("-> THEME SAVED: {theme_name}".format(theme_name=theme_name))
             QMessageBox.information(self, "Theme Saved", f"Theme '{theme_name}' has been saved successfully.")
 

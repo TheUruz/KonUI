@@ -7,6 +7,8 @@ The project aims to provide a user-friendly UI for Prayag2's [Konsave](https://g
 ## Current functionalities
 
 - Listing and filtering all Konsave themes configurations
+- Importing a theme (.knsv)
+- Exporting a theme (.knsv)
 - Apply a Konsave theme configuration from the list (supporting immediate application*)
 - Deleting a Konsave theme configuration
 
@@ -50,10 +52,10 @@ There's just one general rule to follow when using them: the file must always be
 Here are UI screenshots. I choose to keep it as simple as possible in fact the UI consists only of these windows, providing nothing more than the core functionalities of Konsave.
 
 **Landing window**  
-![Landing window](https://i.imgur.com/aWodluN.png)
+![Landing window](https://imgur.com/cs2n7VI.png)
 
 **Saving current configurations**  
 ![Save current theme window](https://imgur.com/864sZuA.png)
 
 **Listing all themes**  
-![All themes window](https://imgur.com/srF2Uy5.png)
+![All themes window](https://imgur.com/WqTvjvN.png)
