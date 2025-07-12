@@ -3,6 +3,8 @@ import re
 import subprocess
 from typing import Optional
 
+from shared.config import Config
+
 
 class OsInterface:
 
@@ -60,3 +62,9 @@ class OsInterface:
     @staticmethod
     def get_filename_without_extension(file_path) -> str:
         return os.path.splitext(os.path.basename(file_path))[0]
+
+    @staticmethod
+    def get_cache_path() -> str:
+        cache_dir = os.path.join(os.getenv("XDG_CACHE_HOME", os.path.expanduser("~/.cache")), Config().get_app_name())
+        os.makedirs(cache_dir, exist_ok=True)
+        return cache_dir

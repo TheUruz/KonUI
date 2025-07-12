@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Optional
 
-_CONFIG = {"app_name": "KonUI", "QSS_directory": "QSS"}
+_CONFIG = {"app_name": "KonUI", "QSS_directory": "QSS", "cache_files": {"last_applied_theme": "last_applied_theme.txt"}}
 
 
 class Config:
@@ -18,3 +19,7 @@ class Config:
         except FileNotFoundError:
             print(f"QSS file for window '{window_name}' not found")
             return ""
+
+    @staticmethod
+    def get_cache_file(key: str) -> Optional[str]:
+        return _CONFIG["cache_files"].get(key)

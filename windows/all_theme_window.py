@@ -1,9 +1,10 @@
+import os
 import subprocess
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QThread
-from PyQt6.QtGui import QFont, QIcon, QMovie
+from PyQt6.QtGui import QColor, QFont, QIcon, QMovie
 from PyQt6.QtWidgets import (
     QDialog,
     QFileDialog,
@@ -44,6 +45,7 @@ class AllThemeWindow(QDialog):
         self.import_threads = {}
         self.custom_font = QFont()
         self.custom_font.setPointSize(10)
+        self.last_theme_applied_color = "#b6e7b0"
         self.setStyleSheet(Config.get_window_qss(Path(__file__)))
         self.setLayout(self.main_layout)
         self.main_layout.setContentsMargins(40, 20, 40, 20)
@@ -54,6 +56,8 @@ class AllThemeWindow(QDialog):
         self.table_widget = QWidget()
         self.table_widget.setObjectName("TableContentWidget")
         self.table_layout = QVBoxLayout(self.table_widget)
+
+        active_theme = self.get_active_theme()
 
         if not self.themes:
             label = QLabel("No Themes Found")
@@ -83,6 +87,10 @@ class AllThemeWindow(QDialog):
         for row, (_, name) in enumerate(self.themes):
             self.table.setItem(row, 0, QTableWidgetItem(name))
 
+            if name == active_theme:
+                self.table.item(row, 0).setBackground(QColor(self.last_theme_applied_color))
+                self.table.item(row, 0).setForeground(QColor("black"))
+
             apply_btn = QPushButton("✅")
             apply_btn.setToolTip("Apply this theme")
             apply_btn.setObjectName("TableButton")
@@ -107,6 +115,7 @@ class AllThemeWindow(QDialog):
         self.table.setColumnWidth(2, button_columns_width)
         self.table.setColumnWidth(3, button_columns_width)
         self.table_layout.addWidget(self.table, stretch=1)
+        self.table_layout.addWidget(self.get_color_legend_widget())
         self.main_layout.insertWidget(1, self.table_widget)
 
     def add_table_header(self) -> None:
@@ -199,12 +208,14 @@ class AllThemeWindow(QDialog):
                         "Theme Applied",
                         f"Theme '{theme_name}' applied successfully.\nSome changes might still require a relog to take full effect",
                     )
+                    self.set_active_theme(theme_name)
                     return
             QMessageBox.information(
                 self,
                 "Theme Applied",
                 f"Theme '{theme_name}' applied successfully.\nPlease logout and log back in to see the changes",
             )
+            self.set_active_theme(theme_name)
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to apply theme '{theme_name}'\nError: {e}")
 
@@ -357,6 +368,52 @@ class AllThemeWindow(QDialog):
                     widget = self.table.cellWidget(row, column)
                     if isinstance(widget, QPushButton):
                         widget.setEnabled(not widget.isEnabled())
+
+    def write_to_cache(self, filename: str, content: str) -> None:
+        cache_dir = OsInterface().get_cache_path()
+        file_path = os.path.join(cache_dir, filename)
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        self.redraw_table()
+
+    def get_active_theme(self) -> Optional[str]:
+        cache_directory = OsInterface().get_cache_path()
+        active_theme = Config().get_cache_file("last_applied_theme") or ""
+        file_path = os.path.join(cache_directory, active_theme)
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        except FileNotFoundError:
+            return None
+
+    def set_active_theme(self, selected_theme: str) -> None:
+        cache_dir = OsInterface().get_cache_path()
+        cache_file = Config().get_cache_file("last_applied_theme")
+        if not cache_file:
+            print("Could not find cache file for last applied theme")
+            return
+        file_path = os.path.join(cache_dir, cache_file)
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(selected_theme.strip())
+        self.redraw_table()
+
+    def get_color_legend_widget(self) -> QWidget:
+        legend_widget = QWidget()
+        legend_layout = QHBoxLayout(legend_widget)
+        legend_layout.setContentsMargins(0, 5, 0, 5)
+        legend_layout.setSpacing(10)
+
+        color_box = QLabel()
+        color_box.setFixedSize(14, 14)
+        color_box.setStyleSheet(f"background-color: {self.last_theme_applied_color}; border: 1px solid #555;")
+
+        label = QLabel("Last theme applied")
+        label.setStyleSheet("font-size: 12px;")
+
+        legend_layout.addWidget(color_box)
+        legend_layout.addWidget(label)
+        legend_layout.addStretch()
+        return legend_widget
 
     # Qt override. do not rename this method
     def closeEvent(self, event) -> None:
